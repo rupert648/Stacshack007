@@ -10,6 +10,7 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
 
 import defaultMarkers from "./markers";
+import mp3 from "./BO2 Theme.mp3";
 
 import './index.css'
 import FeedItem from './feedItem.js'
@@ -22,6 +23,7 @@ function markerTooltipRenderer(marker) {
 const options = {
   markerTooltipRenderer
 };
+
 
 function App() {
   const [markers, setMarkers] = useState([]);
@@ -130,6 +132,7 @@ function App() {
           onClickMarker={onClickMarker}
           onDefocus={onDefocus}
         />
+        <AudioPlayer />
       </div>
       <div className="item3">
         {markerFeedObjects}
@@ -137,6 +140,14 @@ function App() {
     </div>
   );
 }
-
+class AudioPlayer extends React.Component {
+  render() {
+    return (
+      <div>
+        <audio ref="audio_tag" src={mp3} autoPlay />
+      </div>
+    );
+  }
+}
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
