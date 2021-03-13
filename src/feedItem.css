@@ -30,6 +30,23 @@ body {
 	width: 700px;
 }
 
+.popup {
+	background-color: #083b66;
+	border-radius: 10px;
+	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+	position: absolute;
+  bottom: 0;
+  left: 0;
+	max-width: 100%;
+	margin: 20px;
+	width: 700px;
+}
+
+.popup-info {
+	padding: 30px;
+	width: 100%;
+}
+
 .course h6 {
 	opacity: 0.6;
 	margin: 0;

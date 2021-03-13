@@ -6,6 +6,7 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.21.1",
+    "node-mp3-player": "^1.0.3",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-globe": "5.0.2",
