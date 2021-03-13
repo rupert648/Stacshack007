@@ -12,6 +12,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const axios = require('axios').default;
 
+const contacts = require('./coordinates')
+
 
 const logger = require('./util/logger');
 
@@ -45,14 +47,27 @@ app.use('*', (req, res, next) => {
 })
 
 // Assign Routes
-
+let pageNumb = 1
 app.get('/api/news', (req, res, next) => {
+    let today = new Date()
+    let yesterday = new Date(today)
+
+    yesterday.setDate(yesterday.getDate() - 1)
+
+    today = today.toISOString()
+    yesterday = yesterday.toISOString()
+    console.log(today)
+    console.log(yesterday)
+
     newsapi.v2.everything({
-        q: ['environment', 'global warming'],
-        language: 'en'
+        q: ['climate', 'climate', 'clima', 'Klima', 'klimat', 'климат'],
+        // last 24 hours
+        from: yesterday,
+        to: today,
+        page: pageNumb
     }).then(response => {
         let numbResults = response.totalResults
-        
+        pageNumb++
         let newResponse = response.articles.map(article => {
             // include source information in response
             let sourceInfo = {}
@@ -71,10 +86,18 @@ app.get('/api/news', (req, res, next) => {
                     }
                 }
             }
+
+            // console.log(sourceInfo)
+            let coordinates = {};
+            if (sourceInfo.country) {
+                // console.log(sourceInfo.country)
+                coordinates = contacts.get(sourceInfo.country.toUpperCase().trim())
+            }
             
             return {
                 ...article,
-                sourceInfo
+                sourceInfo,
+                coordinates
             }
         })
 
@@ -99,11 +122,14 @@ app.use('*', (req, res) => {
 
 let sources = {}
 
-newsapi.v2.sources({
-    language: 'en'
-}).then(response => {
-    sources = response.sources
-});
+for (let i = 0; i < 5; i++) {
+    newsapi.v2.sources({
+        page: i
+    }).then(response => {
+        sources = response.sources
+    });
+}
+
 
 // Open Server on selected Port
 app.listen(

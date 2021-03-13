@@ -244,3 +244,5 @@ let contacts = new Map()
     contacts.set("ZA", {coordinates: "-30.559482,22.937506"})
     contacts.set("ZM", {coordinates: "-13.133897,27.849332"})
     contacts.set("ZW", {coordinates: "-19.015438,29.154857"})
+
+module.exports = contacts
