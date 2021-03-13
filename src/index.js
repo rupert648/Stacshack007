@@ -21,7 +21,7 @@ function markerTooltipRenderer(marker) {
 }
 
 const options = {
-  markerTooltipRenderer
+  markerTooltipRenderer,
 };
 
 
@@ -174,13 +174,12 @@ function App() {
         <ReactGlobe
           height="80vh"
           markers={markers}
-          options={options}
+          options = {zombies ? {ambientLightColor: 'red'} : {ambientLightColor: 'white'}}
           width="60vw"
           onClickMarker={onClickMarker}
           onDefocus={onDefocus}
         />
         {zombies && <AudioPlayer />}
-        
       </div>
       <div className="item3">
         {markerFeedObjects}
