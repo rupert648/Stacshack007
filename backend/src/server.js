@@ -67,7 +67,6 @@ app.get('/api/news', (req, res, next) => {
         page: pageNumb
     }).then(response => {
         let numbResults = response.totalResults
-        pageNumb++
         let newResponse = response.articles.map(article => {
             // include source information in response
             let sourceInfo = {}
