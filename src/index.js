@@ -29,6 +29,8 @@ function App() {
   const [markers, setMarkers] = useState([]);
   const [event, setEvent] = useState(null);
   const [details, setDetails] = useState(null);
+  const [zombies, setZombies] = useState(false);
+  const [pageCount, setPageCount] = useState(1)
 
   useEffect(() => {
 
@@ -58,6 +60,10 @@ function App() {
       let ydeviation = Math.random() < 0.5 ? Math.random() * -5: Math.random() * 4
       let coordinates = [x + xdeviation+1, y + ydeviation+1]
 
+      let red = Math.random() * 255;
+      let green = Math.random() * 255;
+      let blue = Math.random() * 255;
+
       return {
         "id": idcount++,
         "title": result.title,
@@ -73,11 +79,49 @@ function App() {
       }
     })
 
+    mark.push({
+      "id": 1123,
+      "title": "kino der toten",
+      "color": "black",
+      "coordinates": [52.5200, 13.405],
+      "value": 1,
+      "description": "Kino der Toten (German for Cinema of the Dead) is the fifth Zombies map overall, featured in Call of Duty: Black Ops and Call of Duty: Black Ops III",
+      "content": "Kino der Toten (German for Cinema of the Dead) is the fifth Zombies map overall, featured in Call of Duty: Black Ops and Call of Duty: Black Ops III. The map takes place in at Group 935's Kino Facility, at an abandoned theater in Germany, and it is the first map available to the player in Call of Duty: Black Ops",
+    })
+
+    // append old markers
+    mark = mark.concat(markers)
+
     setMarkers(mark)
+  }
+
+  function refresh() {
+    console.log("in here")
+    console.log(pageCount)
+    if (pageCount < 5) {
+      
+      axios.get('http://localhost:8080/api/news', {
+        params: {
+          pageCount: pageCount
+        }
+      })
+      .then(response => {
+        // processResults(response.data)
+        console.log("!")
+        setPageCount(pageCount + 1)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+    
   }
 
   
   function onClickMarker(marker, markerObject, event) {
+    if (marker.id === 1123) {
+      setZombies(!zombies)
+    }
     setEvent({
       type: "CLICK",
       marker,
@@ -96,14 +140,19 @@ function App() {
 
   // for each marker create a box object
   let markerFeedObjects = markers.map(marker => {
-    return <div><FeedItem marker={marker} /></div>
+    if (marker.id !== 1123) {
+      return <div><FeedItem marker={marker} /></div>
+    }
+    return <div></div>
   })
+
   
   return (
     <div className="grid-container">
       <div className="item1">
         <img height="250px" src={require('./logo.png')}></img>
         {/* <h1><span>{"{ Honua.io }"}</span></h1> */}
+        <button onClick={() => refresh()}>refresh</button>
       </div>
       {details && (
         <div
@@ -132,7 +181,8 @@ function App() {
           onClickMarker={onClickMarker}
           onDefocus={onDefocus}
         />
-        <AudioPlayer />
+        {zombies && <AudioPlayer />}
+        
       </div>
       <div className="item3">
         {markerFeedObjects}

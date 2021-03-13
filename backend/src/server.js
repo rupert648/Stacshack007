@@ -26,7 +26,7 @@ const app = express();
 
 
 // Configure Express App Instance
-app.use(express.json( { limit: '50mb' } ));
+app.use(express.json());
 app.use(express.urlencoded( { extended: true, limit: '10mb' } ));
 
 // Configure custom logger middleware
@@ -49,6 +49,8 @@ app.use('*', (req, res, next) => {
 // Assign Routes
 let pageNumb = 1
 app.get('/api/news', (req, res, next) => {
+
+    let pageCount = req.query.pageCount
     let today = new Date()
     let yesterday = new Date(today)
 
@@ -56,15 +58,13 @@ app.get('/api/news', (req, res, next) => {
 
     today = today.toISOString()
     yesterday = yesterday.toISOString()
-    console.log(today)
-    console.log(yesterday)
 
     newsapi.v2.everything({
         q: ['climate', 'climate', 'clima', 'Klima', 'klimat', 'климат'],
         // last 24 hours
         from: yesterday,
         to: today,
-        page: pageNumb
+        page: pageCount ? pageCount: 1
     }).then(response => {
         let numbResults = response.totalResults
         let newResponse = response.articles.map(article => {
