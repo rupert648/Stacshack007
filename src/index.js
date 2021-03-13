@@ -102,8 +102,7 @@ function App() {
   return (
     <div className="grid-container">
       <div className="item1">
-        <img height="250px" src={require('./logo.png')}></img>
-        {/* <h1><span>{"{ Honua.io }"}</span></h1> */}
+       <img width="250px" display="inline" src={require('./logo.png')}></img> A World of News
       </div>
       {details && (
         <div
