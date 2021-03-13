@@ -158,8 +158,8 @@ function App() {
             background: "white",
             position: "absolute",
             fontSize: 20,
-            bottom: 0,
-            right: 0,
+            bottom: 10,
+            left: 0,
             padding: 12
           }}
         >
@@ -183,6 +183,22 @@ function App() {
       </div>
       <div className="item3">
         {markerFeedObjects}
+      </div>
+      
+      <div className="item4">
+          <span>contributors: </span>
+          <img height="50px" src={require('./rupert.jpg')}></img>
+
+          <button onClick={() => window.location.href = "https://www.janegoodall.org/"}><img height="50px" src={require('./janegoodall.png')}></img></button>
+          <button onClick={() => window.location.href = "https://www.iucn.org/"}><img height="50px" src={require('./iucn.png')}></img></button>
+          <button onClick={() => window.location.href = "https://www.wwf.org.uk/"}><img height="50px" src={require('./wwf.png')}></img></button>
+          <button onClick={() => window.localStorage.href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"}><img height="50px"src={require('./coolearth_logo.webp')}></img></button>
+      </div>
+      <div className="item5">
+          
+          {/* <img height="50px" src={require('./janegoodall.png')}></img>
+          <img height="50px" src={require('./janegoodall.png')}></img>
+          <img height="50px" src={require('./janegoodall.png')}></img> */}
       </div>
     </div>
   );
