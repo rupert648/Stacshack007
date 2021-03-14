@@ -277,11 +277,13 @@ function App() {
           <button onClick={() => window.localStorage.href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"}><img height="50px"src={require('./coolearth_logo.webp')}></img></button>
       </div>
       <div className="item5">
-          
           {/* <img height="50px" src={require('./janegoodall.png')}></img>
           <img height="50px" src={require('./janegoodall.png')}></img>
           <img height="50px" src={require('./janegoodall.png')}></img> */}
       </div>
+      <div>
+        <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/WWF?ref_src=twsrc%5Etfw">Tweets by WWF</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
+    </div>
     </div>
   );
 }
