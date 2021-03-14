@@ -1,15 +1,15 @@
 .grid-container {
     display: grid;
     grid-template-areas:
-      'header header header header header charity'
-      'header header header header header contributors'
+      'header header header charity contributors contributors'
       'map map map map feed feed'
       'map map map map feed feed';
-    background-color: #6b6b6b;
+    background-color: rgb(209, 209, 209);
     color: white
 }
 
 .item1 {
+    margin-top: 50px;
     grid-area: header;
     padding: -10px
 }
@@ -32,8 +32,10 @@
 }
 
 .item4 {
+    border-color: black;
+    border-width: 10px;
     grid-area: charity;
-    margin-top:100px;
+    margin-top:50px;
     margin-right: 50px
 }
 
@@ -45,5 +47,20 @@
 
 .item5 {
     grid-area: contributors;
+    margin-right:30px;
+}
+
+.touringButton button{
+    background-color: #5c8d70;
+	border: 0;
+	border-radius: 50px;
+	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+	color: #fff;
+	font-size: 16px;
+    position: absolute;
+    top: 220px;
+    left: 0;
+	padding: 12px 25px;
+	letter-spacing: 1px;
 }
 

@@ -17,6 +17,8 @@ const contacts = require('./coordinates')
 
 const logger = require('./util/logger');
 
+const webscrape = require('./scraper.js')
+
 // Load .env Enviroment Variables to process.env
 
 const  PORT  = 8080;
@@ -38,7 +40,7 @@ app.use(helmet());
 
 // news api
 const NewsAPI = require('newsapi');
-const newsapi = new NewsAPI('3432005dc39349309d33c3cf6d163503');
+const newsapi = new NewsAPI('00027e5c10e346fe9d4e3f9070d8dcfc');
 
 // This middleware adds the json header to every response
 app.use('*', (req, res, next) => {
@@ -69,29 +71,37 @@ app.get('/api/news', (req, res, next) => {
         let numbResults = response.totalResults
         let newResponse = response.articles.map(article => {
             // include source information in response
+
+            // try and webscrape
+            let location = webscrape(article)
             let sourceInfo = {}
-            if (article.source.id) {
-                for (let i = 0; i < sources.length; i++) {
-                    if (sources[i].id === article.source.id) {
-                        sourceInfo = sources[i];
-                        break;
+            let coordinates = {}
+            if (location === "" || !location) {
+                if (article.source.id) {
+                    for (let i = 0; i < sources.length; i++) {
+                        if (sources[i].id === article.source.id) {
+                            sourceInfo = sources[i];
+                            break;
+                        }
                     }
+                } else {
+                    for (let i = 0; i < sources.length; i++) {
+                        if (sources[i].name === article.source.name) {
+                            sourceInfo = sources[i];
+                            break;
+                        }
+                    }
+                }
+
+                if (sourceInfo.country) {
+                    // console.log(sourceInfo.country)
+                    coordinates = contacts.get(sourceInfo.country.toUpperCase().trim())
                 }
             } else {
-                for (let i = 0; i < sources.length; i++) {
-                    if (sources[i].name === article.source.name) {
-                        sourceInfo = sources[i];
-                        break;
-                    }
-                }
+                coordinates = contacts.get(location.toUpperCase().trim())
             }
-
-            // console.log(sourceInfo)
-            let coordinates = {};
-            if (sourceInfo.country) {
-                // console.log(sourceInfo.country)
-                coordinates = contacts.get(sourceInfo.country.toUpperCase().trim())
-            }
+            
+            
             
             return {
                 ...article,

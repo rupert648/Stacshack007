@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 import ReactGlobe from "react-globe";
 import axios from 'axios'
 import HoverOver from './hover.js'
+import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
 
 import "tippy.js/dist/tippy.css";
 import "tippy.js/animations/scale.css";
@@ -79,13 +80,13 @@ function App() {
 
   useEffect(() => {
     // code here
-    // axios.get('http://localhost:8080/api/news')
-    //   .then(response => {
-    //     processResults(response.data)
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
+    axios.get('http://localhost:8080/api/news')
+      .then(response => {
+        processResults(response.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     processResults(data);
   }, []); 
   
@@ -242,7 +243,7 @@ function App() {
   return (
     <div className="grid-container">
       <div className="item1">
-       <img width="250px" display="inline" src={require('./logo.png')}></img> A World of News
+       <img width="250px" display="inline" src={require('./logo.png')}></img> <span>A World of News</span>
       </div>
         {details &&
           <HoverOver marker={details} />
@@ -263,26 +264,30 @@ function App() {
       <div className="item3">
         {markerFeedObjects}
       </div>
-      {!touring 
-      ?<button onClick={() => setTouring(true)}>Tour</button>
-      :<button onClick={() => setTouring(false)}>Exit Tour</button>
-      }
+      <div className="touringButton">
+        {!touring 
+        ?<button onClick={() => setTouring(true)}>Tour</button>
+        :<button onClick={() => setTouring(false)}>Exit Tour</button>
+        }
+      </div>
       <div className="item4">
-          <span>contributors: </span>
-          <img height="50px" src={require('./rupert.jpg')}></img>
-
-          <button onClick={() => window.location.href = "https://www.janegoodall.org/"}><img height="50px" src={require('./janegoodall.png')}></img></button>
-          <button onClick={() => window.location.href = "https://www.iucn.org/"}><img height="50px" src={require('./iucn.png')}></img></button>
-          <button onClick={() => window.location.href = "https://www.wwf.org.uk/"}><img height="50px" src={require('./wwf.png')}></img></button>
-          <button onClick={() => window.localStorage.href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"}><img height="50px"src={require('./coolearth_logo.webp')}></img></button>
+          <h3>Cool Charities</h3>
+        
+          <a href = "https://www.janegoodall.org/"><img height="50px" src={require('./janegoodall.png')}></img></a>
+          <a href = "https://www.iucn.org/"><img height="50px" src={require('./iucn.png')}></img></a>
+          <a href = "https://www.wwf.org.uk/"><img height="50px" src={require('./wwf.png')}></img></a>
+          <a href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"><img height="50px"src={require('./coolearth_logo.webp')}></img></a>
       </div>
       <div className="item5">
-          {/* <img height="50px" src={require('./janegoodall.png')}></img>
-          <img height="50px" src={require('./janegoodall.png')}></img>
-          <img height="50px" src={require('./janegoodall.png')}></img> */}
+        <TwitterTimelineEmbed
+            sourceType="profile"
+            screenName="CO2_earth"
+            options={{
+              height: 100,
+              }}
+        />
       </div>
       <div>
-        <a class="twitter-timeline" data-theme="dark" href="https://twitter.com/WWF?ref_src=twsrc%5Etfw">Tweets by WWF</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
     </div>
     </div>
   );
