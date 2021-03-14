@@ -292,40 +292,48 @@ function App() {
               }}
         />
       </div>
-        <div className="item6">
+        <div className="item6"  style={{
+    backgroundColor: 'white',
+  }}>
         <ReactGlobe
           height="15vh"
           globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/src/rupert.jpg"
           width="7vw"
           globeCloudsTexture={null}
-          globeBackground={"white"}
+          globeBackgroundTexture={null}
         />
         </div>
-        <div className="item7">
+        <div className="item7"  style={{
+    backgroundColor: 'white',
+  }}>
         <ReactGlobe
           height="15vh"
           globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/IMG_20180716_112222__01.jpg"
           width="7vw"
           globeCloudsTexture={null}
-          globeBackground={"white"}
+          globeBackgroundTexture={null}
         />
         </div>
-        <div className="item8">
+        <div className="item8"  style={{
+    backgroundColor: 'white',
+  }}>
         <ReactGlobe
           height="15vh"
           globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/IMG-7444.JPG"
           width="7vw"
           globeCloudsTexture={null}
-          globeBackground={"white"}
+          globeBackgroundTexture={null}
         />
         </div>
-        <div className="item9">
+        <div className="item9"  style={{
+    backgroundColor: 'white',
+  }}>
         <ReactGlobe
           height="15vh"
           globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/154714214_258183295805971_6515180868616470305_n.jpg"
           width="7vw"
           globeCloudsTexture={null}
-          globeBackground={"white"}
+          globeBackgroundTexture={null}
         />
         </div>
       <div>
