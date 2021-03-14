@@ -33,48 +33,31 @@ var country_codes = {"BD": "Bangladesh", "BE": "Belgium", "BF": "Burkina Faso", 
 
 function markerTooltipRenderer(marker) {
   console.log(marker.sourceInfo.country);
-  return `${marker.title} || ORIGIN: 
-          ${country_codes[(marker.sourceInfo.country).toUpperCase()]}`;
+  return `From ${country_codes[(marker.sourceInfo.country).toUpperCase()]} || 
+          ${marker.title}`;
 }
 
 const ops = {
     ambientLightColor: 'white',
-    ambientLightIntensity: 0.8,
-    cameraDistanceRadiusScale: 3,
-    cameraMaxDistanceRadiusScale: 4,
     cameraMaxPolarAngle: Math.PI,
-    cameraMinPolarAngle: 0,
     enableCameraAutoRotate: false,
     cameraAutoRotateSpeed: 0.01,
-    enableDefocus: true,
-    enableCameraRotate: true,
-    enableCameraZoom: true,
-    enableGlobeGlow: true,
-    enableMarkerGlow: true,
-    enableMarkerTooltip: true,
-    focusAnimationDuration: 1000,
-    focusDistanceRadiusScale: 1.5,
-    focusEasingFunction: ['Cubic', 'Out'],
-    globeCloudsOpacity: 0.3,
-    globeGlowCoefficient: 0.1,
-    globeGlowColor: '#d1d1d1',
-    globeGlowPower: 3,
-    globeGlowRadiusScale: 0.2,
-    markerEnterAnimationDuration: 1000,
-    markerEnterEasingFunction: ['Linear', 'None'],
-    markerExitAnimationDuration: 500,
-    markerExitEasingFunction: ['Cubic', 'Out'],
-    markerGlowCoefficient: 0,
-    markerGlowPower: 3,
-    markerGlowRadiusScale: 2,
-    markerOffsetRadiusScale: 0,
-    markerRadiusScaleRange: [0.005, 0.02],
     markerRenderer: null,
     markerTooltipRenderer: markerTooltipRenderer,
-    markerType: 'dot',
-    pointLightColor: 'white',
-    pointLightIntensity: 1,
-    pointLightPositionRadiusScales: [-2, 1, -1],
+    focusAnimationDuration: 3000,
+    focusDistanceRadiusScale: 2,
+    focusEasingFunction: ['Linear', 'None'],
+  }
+const zomb = {
+    ambientLightColor: 'red',
+    cameraMaxPolarAngle: Math.PI,
+    enableCameraAutoRotate: false,
+    cameraAutoRotateSpeed: 0.01,
+    markerRenderer: null,
+    markerTooltipRenderer: markerTooltipRenderer,
+    focusAnimationDuration: 3000,
+    focusDistanceRadiusScale: 2,
+    focusEasingFunction: ['Linear', 'None']
   }
 // const options = {
 //     markerTooltipRenderer,
@@ -88,7 +71,11 @@ function App() {
   const [markers, setMarkers] = useState([]);
   const [event, setEvent] = useState(null);
   const [details, setDetails] = useState(null);
-  const [options, setOptions] = useState(ops);
+  const [zombies, setZombies] = useState(false);
+  const [pageCount, setPageCount] = useState(1);
+  const [touring, setTouring] = useState(false);
+  const [focus, setFocus] = useState(null);
+
 
   useEffect(() => {
     // code here
@@ -102,26 +89,45 @@ function App() {
     processResults(data);
   }, []); 
   
+
+  function isInside(coordinates, past_coordinates) {
+    var i;
+    for(i = 0; i < past_coordinates.length; i++) {
+      if(past_coordinates[i][0] === coordinates[0] && past_coordinates[i][1] === coordinates[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // u dont need to do this
   function processResults(results) {
     let mark = results.filter(result => {
       return result.coordinates.coordinates
     })
     let idcount = 0;
-
+    let addedCoords = []
     mark = mark.map(result => {
       let parts = result.coordinates.coordinates.split(",");
       let x = parseFloat(parts[0])
       let y = parseFloat(parts[1])
+      let coordinates = [x,y];
       //add random deviation
-      let xdeviation = Math.random() < 0.5 ? Math.random() * -5: Math.random() * 4
-      let ydeviation = Math.random() < 0.5 ? Math.random() * -5: Math.random() * 4
-      let coordinates = [x + xdeviation+1, y + ydeviation+1]
+      while(isInside(coordinates, addedCoords)) {
+        let xdeviation = Math.random() < 0.5 ? Math.random() * -5: Math.random() * 4
+        let ydeviation = Math.random() < 0.5 ? Math.random() * -5: Math.random() * 4
+        coordinates = [x + xdeviation+1, y + ydeviation+1]
+      }
+      addedCoords.push(coordinates);
+      let red = (~~(Math.random() * 255)).toString();
+      let green = (~~(Math.random() * 255)).toString();
+      let blue = (~~(Math.random() * 255)).toString();
+      console.log(red, green, blue);
 
       return {
         "id": idcount++,
         "title": result.title,
-        "color": "red",
+        "color": 'rgb(' + red + ',' + green + ',' + blue + ')',
         "coordinates": coordinates,
         "value": 1,
         "description": result.description,
@@ -133,11 +139,50 @@ function App() {
       }
     })
 
+    mark.push({
+      "id": 1123,
+      "title": "kino der toten",
+      "color": "black",
+      "coordinates": [52.5200, 13.405],
+      "value": 1,
+      "sourceInfo": {country: 'de'}, 
+      "description": "Kino der Toten (German for Cinema of the Dead) is the fifth Zombies map overall, featured in Call of Duty: Black Ops and Call of Duty: Black Ops III",
+      "content": "Kino der Toten (German for Cinema of the Dead) is the fifth Zombies map overall, featured in Call of Duty: Black Ops and Call of Duty: Black Ops III. The map takes place in at Group 935's Kino Facility, at an abandoned theater in Germany, and it is the first map available to the player in Call of Duty: Black Ops",
+    })
+
+    // append old markers
+    mark = mark.concat(markers)
+
     setMarkers(mark)
+  }
+
+  function refresh() {
+    console.log("in here")
+    console.log(pageCount)
+    if (pageCount < 5) {
+      
+      axios.get('http://localhost:8080/api/news', {
+        params: {
+          pageCount: pageCount
+        }
+      })
+      .then(response => {
+        // processResults(response.data)
+        console.log("!")
+        setPageCount(pageCount + 1)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+    
   }
 
   
   function onClickMarker(marker, markerObject, event) {
+    if (marker.id === 1123) {
+      setZombies(!zombies)
+    }
     setEvent({
       type: "CLICK",
       marker,
@@ -145,45 +190,97 @@ function App() {
       pointerEventPosition: { x: event.clientX, y: event.clientY }
     });
     setDetails(marker);
-    setOptions(ops);
   }
+
   function onDefocus(previousFocus) {
     setEvent({
       type: "DEFOCUS",
       previousFocus
     });
     setDetails(null);
-    setOptions(ops);
+    setZombies(false);
   }
-  console.log(options);
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  useEffect(() => {
+    console.log(touring);
+    if(touring) {
+      lookaround();
+    }
+  }, [touring]);
+
+  async function lookaround() {
+    var i = 0;
+      for(i = 0 ; i < markers.length ; i++) {
+        console.log(markers[i].coordinates);
+        setFocus(markers[i].coordinates);
+        console.log(focus);
+        setDetails(markers[i]);
+        await sleep(5000);
+        console.log(touring);
+        if(!touring) {
+          setFocus(null);
+          setDetails(null);
+          break;
+        }
+      }
+      setFocus(null);
+      setDetails(null);
+  }
 
   // for each marker create a box object
   let markerFeedObjects = markers.map(marker => {
-    return <div><FeedItem marker={marker} /></div>
+    if (marker.id !== 1123) {
+      return <div><FeedItem marker={marker} /></div>
+    }
+    return <div></div>
   })
-  
+
   return (
     <div className="grid-container">
       <div className="item1">
-        <img height="250px" src={require('./logo.png')}></img>
-        {/* <h1><span>{"{ Honua.io }"}</span></h1> */}
+       <img width="250px" display="inline" src={require('./logo.png')}></img> A World of News
       </div>
         {details &&
           <HoverOver marker={details} />
         }
+      
       <div className="item2">
         <ReactGlobe
           height="80vh"
           markers={markers}
-          options={options}
+          focus = {focus}
+          options = {zombies ? zomb : ops}
           width="60vw"
           onClickMarker={onClickMarker}
           onDefocus={onDefocus}
         />
-        <AudioPlayer />
+        {zombies && <AudioPlayer />}
       </div>
       <div className="item3">
         {markerFeedObjects}
+      </div>
+      {!touring 
+      ?<button onClick={() => setTouring(true)}>Tour</button>
+      :<button onClick={() => setTouring(false)}>Exit Tour</button>
+      }
+      <div className="item4">
+          <span>contributors: </span>
+          <img height="50px" src={require('./rupert.jpg')}></img>
+
+          <button onClick={() => window.location.href = "https://www.janegoodall.org/"}><img height="50px" src={require('./janegoodall.png')}></img></button>
+          <button onClick={() => window.location.href = "https://www.iucn.org/"}><img height="50px" src={require('./iucn.png')}></img></button>
+          <button onClick={() => window.location.href = "https://www.wwf.org.uk/"}><img height="50px" src={require('./wwf.png')}></img></button>
+          <button onClick={() => window.localStorage.href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"}><img height="50px"src={require('./coolearth_logo.webp')}></img></button>
+      </div>
+      <div className="item5">
+          
+          {/* <img height="50px" src={require('./janegoodall.png')}></img>
+          <img height="50px" src={require('./janegoodall.png')}></img>
+          <img height="50px" src={require('./janegoodall.png')}></img> */}
       </div>
     </div>
   );
