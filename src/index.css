@@ -4,7 +4,7 @@
       'header header header charity contributors contributors'
       'map map map map feed feed'
       'map map map map feed feed';
-    background-color: rgb(209, 209, 209);
+    background-color: white;
     color: white
 }
 
@@ -28,11 +28,12 @@
 .item3 {
     grid-area: feed;
     overflow-y: scroll;
-    height:750px
+    height:800px
 }
 
 .item4 {
     border-color: black;
+    color: black;
     border-width: 10px;
     grid-area: charity;
     margin-top:50px;
@@ -48,6 +49,8 @@
 .item5 {
     grid-area: contributors;
     margin-right:30px;
+    border: 10px;
+    border-color: black;
 }
 
 .touringButton button{

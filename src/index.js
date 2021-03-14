@@ -243,7 +243,7 @@ function App() {
   return (
     <div className="grid-container">
       <div className="item1">
-       <img width="250px" display="inline" src={require('./logo.png')}></img> <span>A World of News</span>
+       <img width="250px" display="inline" src={require('./logo.png')}></img>
       </div>
         {details &&
           <HoverOver marker={details} />
@@ -282,6 +282,7 @@ function App() {
         <TwitterTimelineEmbed
             sourceType="profile"
             screenName="CO2_earth"
+            theme="dark"
             options={{
               height: 100,
               }}
