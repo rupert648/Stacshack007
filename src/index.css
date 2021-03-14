@@ -1,7 +1,8 @@
 .grid-container {
     display: grid;
     grid-template-areas:
-      'header header header charity contributors contributors'
+      'header header header charity twitter twitter'
+      'contributors1 contributors2 contributors3 contributors4 twitter twitter'
       'map map map map feed feed'
       'map map map map feed feed';
     background-color: white;
@@ -47,10 +48,26 @@
 }
 
 .item5 {
-    grid-area: contributors;
+    grid-area: twitter;
     margin-right:30px;
     border: 10px;
     border-color: black;
+}
+
+.item6 {
+    grid-area: contributors1
+}
+
+.item7 {
+    grid-area: contributors2
+}
+
+.item8 {
+    grid-area: contributors3
+}
+
+.item9 {
+    grid-area: contributors4
 }
 
 .touringButton button{
@@ -61,7 +78,7 @@
 	color: #fff;
 	font-size: 16px;
     position: absolute;
-    top: 220px;
+    top: 340px;
     left: 0;
 	padding: 12px 25px;
 	letter-spacing: 1px;

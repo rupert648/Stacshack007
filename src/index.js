@@ -288,10 +288,46 @@ function App() {
             screenName="CO2_earth"
             theme="dark"
             options={{
-              height: 100,
+              height: 300,
               }}
         />
       </div>
+        <div className="item6">
+        <ReactGlobe
+          height="15vh"
+          globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/src/rupert.jpg"
+          width="7vw"
+          globeCloudsTexture={null}
+          globeBackground={"white"}
+        />
+        </div>
+        <div className="item7">
+        <ReactGlobe
+          height="15vh"
+          globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/IMG_20180716_112222__01.jpg"
+          width="7vw"
+          globeCloudsTexture={null}
+          globeBackground={"white"}
+        />
+        </div>
+        <div className="item8">
+        <ReactGlobe
+          height="15vh"
+          globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/IMG-7444.JPG"
+          width="7vw"
+          globeCloudsTexture={null}
+          globeBackground={"white"}
+        />
+        </div>
+        <div className="item9">
+        <ReactGlobe
+          height="15vh"
+          globeTexture= "https://raw.githubusercontent.com/rupert648/Stacshack007/main/154714214_258183295805971_6515180868616470305_n.jpg"
+          width="7vw"
+          globeCloudsTexture={null}
+          globeBackground={"white"}
+        />
+        </div>
       <div>
     </div>
     </div>
