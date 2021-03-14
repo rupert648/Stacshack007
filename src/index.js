@@ -38,28 +38,18 @@ function markerTooltipRenderer(marker) {
           ${marker.title}`;
 }
 
-const ops = {
-    ambientLightColor: 'white',
-    cameraMaxPolarAngle: Math.PI,
-    enableCameraAutoRotate: false,
-    cameraAutoRotateSpeed: 0.01,
-    markerRenderer: null,
-    markerTooltipRenderer: markerTooltipRenderer,
-    focusAnimationDuration: 3000,
-    focusDistanceRadiusScale: 2,
-    focusEasingFunction: ['Linear', 'None'],
-  }
-const zomb = {
-    ambientLightColor: 'red',
-    cameraMaxPolarAngle: Math.PI,
-    enableCameraAutoRotate: false,
-    cameraAutoRotateSpeed: 0.01,
-    markerRenderer: null,
-    markerTooltipRenderer: markerTooltipRenderer,
-    focusAnimationDuration: 3000,
-    focusDistanceRadiusScale: 2,
-    focusEasingFunction: ['Linear', 'None']
-  }
+
+// const zomb = {
+//     ambientLightColor: 'red',
+//     cameraMaxPolarAngle: Math.PI,
+//     enableCameraAutoRotate: false,
+//     cameraAutoRotateSpeed: 0.01,
+//     markerRenderer: null,
+//     markerTooltipRenderer: markerTooltipRenderer,
+//     focusAnimationDuration: 1000,
+//     focusDistanceRadiusScale: 3,
+//     focusEasingFunction: ['Cubic', 'Out'],
+//   }
 // const options = {
 //     markerTooltipRenderer,
 //     cameraRotateSpeed: 0.2,
@@ -77,6 +67,17 @@ function App() {
   const [touring, setTouring] = useState(false);
   const [focus, setFocus] = useState(null);
 
+  const ops = {
+    ambientLightColor: zombies ? 'red' : 'white',
+    cameraMaxPolarAngle: Math.PI,
+    enableCameraAutoRotate: false,
+    cameraAutoRotateSpeed: 0.01,
+    markerRenderer: null,
+    markerTooltipRenderer: markerTooltipRenderer,
+    focusAnimationDuration: !touring ? null : 3000,
+    focusDistanceRadiusScale: 2,
+    focusEasingFunction: ['Cubic', 'Out'],
+  }
 
   useEffect(() => {
     // code here
@@ -182,7 +183,10 @@ function App() {
   
   function onClickMarker(marker, markerObject, event) {
     if (marker.id === 1123) {
-      setZombies(!zombies)
+      setZombies(true)
+    }
+    else{
+      setZombies(false)
     }
     setEvent({
       type: "CLICK",
@@ -254,7 +258,7 @@ function App() {
           height="80vh"
           markers={markers}
           focus = {focus}
-          options = {zombies ? zomb : ops}
+          options = {ops}
           width="60vw"
           onClickMarker={onClickMarker}
           onDefocus={onDefocus}
@@ -273,10 +277,10 @@ function App() {
       <div className="item4">
           <h3>Cool Charities</h3>
         
-          <button onClick={() => window.location.href = "https://www.janegoodall.org/"}><img height="50px" src={require('./janegoodall.png')}></img></button>
-          <button onClick={() => window.location.href = "https://www.iucn.org/"}><img height="50px" src={require('./iucn.png')}></img></button>
-          <button onClick={() => window.location.href = "https://www.wwf.org.uk/"}><img height="50px" src={require('./wwf.png')}></img></button>
-          <button onClick={() => window.localStorage.href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"}><img height="50px"src={require('./coolearth_logo.webp')}></img></button>
+          <a href = "https://www.janegoodall.org/"><img height="50px" src={require('./janegoodall.png')}></img></a>
+          <a href = "https://www.iucn.org/"><img height="50px" src={require('./iucn.png')}></img></a>
+          <a href = "https://www.wwf.org.uk/"><img height="50px" src={require('./wwf.png')}></img></a>
+          <a href = "https://www.coolearth.org/?gclid=CjwKCAiA4rGCBhAQEiwAelVti-S649KzWYKlt4lbUUrr7TGsS5JFYCm3uK6PtVfrCIfcRaLAOLW2wxoCW8AQAvD_BwE"><img height="50px"src={require('./coolearth_logo.webp')}></img></a>
       </div>
       <div className="item5">
         <TwitterTimelineEmbed
@@ -288,6 +292,8 @@ function App() {
               }}
         />
       </div>
+      <div>
+    </div>
     </div>
   );
 }
